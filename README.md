@@ -99,5 +99,18 @@ for json_file_name in os.listdir(json_directory):
  ```
 
 이 데이터는 라벨링데이터 하나 당 대응하는 하나의 jpg파일이 있고 json파일에는 그 jpg파일의 다양한 정보가 담겨있습니다. 이 코드에서는 json파일에 대응하는 jpg파일을 불러오고 그 jpg파일의 정보가 담겨있는 json파일의 damage항목의 값을 추출하여 레이블로 사용합니다.
-
-
+ ```python
+print(f"레이블의 종류: {list(labels)}")
+                  if label == "Scratched":
+                        target_directory = "/content/drive/MyDrive/JH/damage/test/Scratched"
+                    elif label == "Breakage":
+                        target_directory = "/content/drive/MyDrive/JH/damage/test/Breakage"
+                    elif label == "Separated":
+                        target_directory = "/content/drive/MyDrive/JH/damage/test/Separated"
+                    elif label == "Crushed":
+                        target_directory = "/content/drive/MyDrive/JH/damage/test/Crushed"
+                    else:
+                        print(f"Unknown label: {label}. Skipping file: {json_file_name}")
+                        continue
+ ```
+레이블의 종류를 확인해 드라이브에 레이블마다 폴더를 만들고 이미지의 레이블에 맞는 폴더에 이미지를 복사해줍니다.
