@@ -25,6 +25,7 @@ from shutil import copyfile
 
 drive.mount('/content/drive')
  ```
+
 resnet50을 포함한 프로젝트에 필요한 주요한 라이브러리들을 호출해 주고 CNN에 필요한 Flatten, Dropout, GlobalAveragePooling2D등을 불러와 줍니다. 또한 코랩 환경에서 드라이브를 사용하기 위해 드라이브를 불러와줍니다.
 
 
