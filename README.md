@@ -114,3 +114,85 @@ print(f"레이블의 종류: {list(labels)}")
                         continue
  ```
 레이블의 종류를 확인해 드라이브에 레이블마다 폴더를 만들고 이미지의 레이블에 맞는 폴더에 이미지를 복사해줍니다.
+
+ ```python
+train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    '/content/drive/MyDrive/JH/damage/train',
+    image_size=(224, 224),
+    batch_size=64,
+    seed=42,
+    color_mode='rgb'
+)
+
+test_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    '/content/drive/MyDrive/JH/damage/test',
+    image_size=(224, 224),
+    batch_size=64,
+    seed=42,
+    color_mode='rgb'
+)
+
+def preprocess_func(image, label):
+    image = tf.cast(image / 255.0, tf.float32)
+    return image, label
+
+train_ds = train_ds.map(preprocess_func)
+test_ds = test_ds.map(preprocess_func)
+
+def preprocess_funcc(image, label):
+    label = tf.one_hot(label, depth=4)
+    return image, label
+
+train_ds = train_ds.map(preprocess_funcc)
+test_ds = test_ds.map(preprocess_funcc)
+
+ ```
+모델 학습 부분에서 resnet50을 사용하기 위해 이미지를 224,224에 rgb로 바꿔주고 정규화와 원-핫 인코딩을 적용해줍니다.
+
+ ```python
+base_model = ResNet50(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+model = Sequential()
+model.add(base_model)
+model.add(GlobalAveragePooling2D())
+model.add(Dense(512, activation='relu'))
+model.add(Dropout(0.15))
+model.add(Dense(4, activation='softmax'))
+model.summary()
+
+model.compile(optimizer=Adam(learning_rate=0.001),loss='binary_crossentropy',metrics=['accuracy'])
+
+def train_model(model, train_data, val_data, epochs):
+    # 모델 학습
+    history = model.fit(train_data, validation_data=val_data, epochs=epochs, verbose=1)
+    return history
+
+history = train_model(model, train_ds, test_ds, epochs=80)
+```
+모델 구성과 학습 부분입니다. resnet50으로 모델을 구성하며 학습된 가중치를 사용하였고 활성화 함수로는 relu함수, softmax함수를 사용하며 epochs는 80으로 모델을 실행시켰습니다.
+
+ ```python
+from tensorflow.keras.preprocessing import image
+
+damage_labels = {0: 'Breakage', 1: 'Crushed', 2: 'Scratched', 3: 'Separated'}
+
+def predict_damage(img_path, model):
+    img = image.load_img(img_path, target_size=(224, 224))
+    img_array = image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)
+
+    img_array /= 255.0
+
+    # 예측
+    predictions = model.predict(img_array)[0]
+    for i, score in enumerate(predictions):
+        print(f"{damage_labels[i]}: {score*100:.2f}%")  # 각 손상 유형의 확률을 출력
+
+    damage_idx = np.argmax(predictions)  # 가장 높은 확률을 가진 인덱스
+    damage = damage_labels[damage_idx]
+
+    return damage
+
+img_path = '/content/drive/MyDrive/JH/996C0D3F5D785FDD03.jpg'
+predicted_damage = predict_damage(img_path, model)
+print(f"이미지의 손상: {predicted_damage}")
+
