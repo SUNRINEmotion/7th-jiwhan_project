@@ -56,12 +56,12 @@ for file_name in train_files:
 for file_name in test_files:
     shutil.copy(os.path.join(directory_path, file_name), 
                 os.path.join(test_directory_path, file_name))
-'''
+ ```
 
 라벨링데이터(json파일)들을 8 : 2 의 비율로 train,test를 나눠줍니다. 나눈 데이터들을 이미 드라이브에 만들어 놓은 traindata,testdata폴더에 복사합니다.
 
 
-''' python
+ ```python
 # 폴더 경로 설정
 json_directory = "/content/drive/MyDrive/JH/라벨링데이터/TL_damage/traindata"
 image_directory = "/content/drive/MyDrive/JH/원천데이터/TS_damage/damage"
@@ -96,7 +96,7 @@ for json_file_name in os.listdir(json_directory):
                     # 이미지와 레이블 저장
                     images.append(image_array)
                     labels.append(label)
-'''
+ ```
 
 이 데이터는 라벨링데이터 하나 당 대응하는 하나의 jpg파일이 있고 json파일에는 그 jpg파일의 다양한 정보가 담겨있습니다. 이 코드에서는 json파일에 대응하는 jpg파일을 불러오고 그 jpg파일의 정보가 담겨있는 json파일의 damage항목의 값을 추출하여 레이블로 사용합니다.
 
