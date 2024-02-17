@@ -58,7 +58,7 @@ for file_name in test_files:
                 os.path.join(test_directory_path, file_name))
  ```
 
-라벨링데이터(json파일)들을 8 : 2 의 비율로 train,test를 나눠줍니다. 나눈 데이터들을 이미 드라이브에 만들어 놓은 traindata,testdata폴더에 복사합니다.
+라벨링데이터(json 파일)들을 8 : 2 의 비율로 train,test를 나눠줍니다. 나눈 데이터들을 이미 드라이브에 만들어 놓은 traindata,testdata폴더에 복사합니다.
 
 
  ```python
@@ -98,7 +98,7 @@ for json_file_name in os.listdir(json_directory):
                     labels.append(label)
  ```
 
-이 데이터는 라벨링데이터 하나 당 대응하는 하나의 jpg파일이 있고 json파일에는 그 jpg파일의 다양한 정보가 담겨있습니다. 이 코드에서는 json파일에 대응하는 jpg파일을 불러오고 그 jpg파일의 정보가 담겨있는 json파일의 damage항목의 값을 추출하여 레이블로 사용합니다.
+이 데이터는 라벨링데이터 하나당 대응하는 하나의 jpg 파일이 있고 json 파일에는 그 jpg 파일의 다양한 정보가 담겨있습니다. 이 코드에서는 json 파일에 대응하는 jpg 파일을 불러오고 그 jpg 파일의 정보가 담겨있는 json 파일의 damage 항목의 값을 추출하여 레이블로 사용합니다.
  ```python
 print(f"레이블의 종류: {list(labels)}")
                   if label == "Scratched":
@@ -195,4 +195,9 @@ def predict_damage(img_path, model):
 img_path = '/content/drive/MyDrive/JH/996C0D3F5D785FDD03.jpg'
 predicted_damage = predict_damage(img_path, model)
 print(f"이미지의 손상: {predicted_damage}")
+```
+이미지를 넣으면 이미지를 인식하기 좋게 224,224로 만들어주고 정규화를 해줍니다. 그리고 앞서 학습한 모델을 이용하여 자동차 사진 이미지의 사고 유형을 인식하고 각 레이블의 확률을 출력하며 마지막에 가장 확률이 높은 레이블을 출력합니다.
 
+
+#### 개선 방안
+처음에는 데이터의 샘플데이터가 아니라 약 50gb의 원본 데이터를 이용해 학습을 할려했지만 너무 큰 데이터의 크기는 코랩 환경에서는 무리였습니다. 그래서 다음에는 코랩이 아닌 다른 환경에서 더 크고 자세한 데이터들을 이용하여 인공지능 개발을 하고 싶습니다.
