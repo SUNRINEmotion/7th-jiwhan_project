@@ -200,7 +200,8 @@ print(f"이미지의 손상: {predicted_damage}")
 
 ![1378346_1187445_4241](https://github.com/SUNRINEmotion/7th-jiwhan_project/assets/79753445/4a0f52bb-543d-405e-8532-75a45ac39c3f)
 이 이미지를 입력하면
-
+![화면 캡처 2024-02-17 210153](https://github.com/SUNRINEmotion/7th-jiwhan_project/assets/79753445/f809f795-2b46-405a-ac12-7abbf9a5f9b2)
+이와 같이 출력됩니다.
 
 
 #### 개선 방안
